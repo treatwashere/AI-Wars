@@ -4,6 +4,74 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AI Wars</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      background: #f7f7f8;
+      color: #202123;
+    }
+
+    header {
+      padding: 28px 24px;
+      text-align: center;
+      background: #fff;
+      border-bottom: 1px solid #ddd;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 34px;
+    }
+
+    main {
+      min-height: calc(100vh - 96px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .apps {
+      width: min(420px, 100%);
+      display: grid;
+      gap: 14px;
+    }
+
+    .app-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      width: 100%;
+      padding: 18px 20px;
+      border: 1px solid #d9d9e3;
+      border-radius: 14px;
+      background: #fff;
+      color: #202123;
+      text-decoration: none;
+      text-align: center;
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+
+    .app-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(0,0,0,.08);
+    }
+
+    .app-logo {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -11,10 +79,27 @@
   </header>
 
   <main>
-    <button type="button" onclick="window.location.href='ChatGPT/chatgpthome.html'">ChatGPT</button>
-    <button type="button">Claude</button>
-    <button type="button">Gemini</button>
-    <button type="button">DeepSeek</button>
+    <div class="apps">
+      <a class="app-button" href="ChatGPT/chatgpthome.html">
+        <img class="app-logo" src="../Assets/IMG_5018.png" alt="ChatGPT logo">
+        <span>ChatGPT</span>
+      </a>
+
+      <button class="app-button" type="button">
+        <img class="app-logo" src="../Assets/IMG_5019.png" alt="Claude logo">
+        <span>Claude</span>
+      </button>
+
+      <button class="app-button" type="button">
+        <img class="app-logo" src="../Assets/IMG_5020.jpeg" alt="Gemini logo">
+        <span>Gemini</span>
+      </button>
+
+      <button class="app-button" type="button">
+        <img class="app-logo" src="../Assets/IMG_5021.jpeg" alt="DeepSeek logo">
+        <span>DeepSeek</span>
+      </button>
+    </div>
   </main>
 </body>
 </html>
