@@ -180,6 +180,15 @@
       if (head.x === food.x && head.y === food.y) {
         score++;
         scoreEl.textContent = "Score: " + score;
+
+        // Grow by 1 square after every 2 fruits.
+        // The snake already grows by 1 square when eating a fruit,
+        // so the extra square is added on every second fruit.
+        if (score % 2 === 0) {
+          const tail = snake[snake.length - 1];
+          snake.push({ x: tail.x, y: tail.y });
+        }
+
         food = createFood();
       } else {
         snake.pop();
