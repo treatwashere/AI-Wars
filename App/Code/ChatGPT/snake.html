@@ -18,8 +18,35 @@
       background: #111827;
       color: white;
       padding: 20px;
+      transition: background .2s ease, color .2s ease;
     }
+
+    body.light {
+      background: #f7f7f8;
+      color: #202123;
+    }
+
     h1 { margin: 0; }
+
+    #themeToggle {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      padding: 10px 14px;
+      border: 1px solid #4b5563;
+      border-radius: 10px;
+      background: #1f2937;
+      color: white;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    body.light #themeToggle {
+      background: white;
+      color: #202123;
+      border-color: #d1d5db;
+    }
     #score { font-size: 20px; font-weight: 700; }
     .game-wrap {
       position: relative;
@@ -32,6 +59,7 @@
       height: 100%;
       background: #0b1220;
       border: 3px solid white;
+      transition: background .2s ease, border-color .2s ease;
       image-rendering: pixelated;
     }
     #gameOverOverlay {
@@ -62,6 +90,12 @@
       cursor: pointer;
       font-size: 17px;
       font-weight: 700;
+      background: white;
+      color: #111827;
+    }
+
+    body.light canvas {
+      border-color: #202123;
     }
     #mobileControls {
       display: none;
@@ -96,6 +130,7 @@
   </style>
 </head>
 <body>
+  <button id="themeToggle" type="button" aria-label="Toggle light and dark mode">☀️ Light Mode</button>
   <h1>Snake Game</h1>
   <div id="score">Score: 0</div>
 
@@ -122,8 +157,24 @@
     const gameOverOverlay = document.getElementById("gameOverOverlay");
     const finalScoreEl = document.getElementById("finalScore");
     const restartButton = document.getElementById("restart");
+    const themeToggle = document.getElementById("themeToggle");
 
     const grid = 20;
+
+    function applyTheme(theme) {
+      const light = theme === "light";
+      document.body.classList.toggle("light", light);
+      themeToggle.textContent = light ? "🌙 Dark Mode" : "☀️ Light Mode";
+      canvas.style.background = light ? "#ffffff" : "#0b1220";
+      canvas.style.borderColor = light ? "#202123" : "#ffffff";
+      localStorage.setItem("snakeTheme", theme);
+    }
+
+    themeToggle.addEventListener("click", () => {
+      applyTheme(document.body.classList.contains("light") ? "dark" : "light");
+    });
+
+    applyTheme(localStorage.getItem("snakeTheme") || "dark");
     const tile = canvas.width / grid;
     let snake, food, direction, nextDirection, score, gameOver, timer;
 
@@ -206,7 +257,7 @@
     }
 
     function draw() {
-      ctx.fillStyle = "#0b1220";
+      ctx.fillStyle = document.body.classList.contains("light") ? "#ffffff" : "#0b1220";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       ctx.fillStyle = "#ef4444";
