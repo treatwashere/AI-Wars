@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChatGPT</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      background: #f7f7f8;
+      color: #202123;
+    }
+    header {
+      padding: 28px 24px;
+      text-align: center;
+      background: #fff;
+      border-bottom: 1px solid #ddd;
+    }
+    header h1 { margin: 0; font-size: 34px; }
+    main {
+      min-height: calc(100vh - 96px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .apps {
+      width: min(420px, 100%);
+      display: grid;
+      gap: 14px;
+    }
+    .app-button {
+      display: block;
+      padding: 18px 20px;
+      border: 1px solid #d9d9e3;
+      border-radius: 14px;
+      background: #fff;
+      color: #202123;
+      text-decoration: none;
+      text-align: center;
+      font-size: 18px;
+      font-weight: 600;
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+    .app-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(0,0,0,.08);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>ChatGPT</h1>
+  </header>
+
+  <main>
+    <div class="apps">
+      <a class="app-button" href="snake.html">Snake Game</a>
+    </div>
+  </main>
+</body>
+</html>
