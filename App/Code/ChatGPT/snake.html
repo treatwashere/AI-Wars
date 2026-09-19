@@ -35,7 +35,35 @@
       cursor: pointer;
       font-size: 16px;
     }
-    #message { min-height: 20px; }
+    #message { min-height: 20px; text-align: center; }
+    #mobileControls {
+      display: none;
+      grid-template-columns: repeat(3, 58px);
+      grid-template-rows: repeat(2, 58px);
+      gap: 8px;
+      touch-action: manipulation;
+      user-select: none;
+    }
+    #mobileControls button {
+      width: 58px;
+      height: 58px;
+      padding: 0;
+      font-size: 24px;
+      font-weight: bold;
+      background: #374151;
+      color: white;
+      touch-action: manipulation;
+    }
+    #mobileControls button:active { transform: scale(0.94); }
+    #up { grid-column: 2; grid-row: 1; }
+    #left { grid-column: 1; grid-row: 2; }
+    #down { grid-column: 2; grid-row: 2; }
+    #right { grid-column: 3; grid-row: 2; }
+    @media (max-width: 700px), (pointer: coarse) {
+      #mobileControls { display: grid; }
+      canvas { width: min(90vw, 420px); height: min(90vw, 420px); }
+      button { -webkit-tap-highlight-color: transparent; }
+    }
   </style>
 </head>
 <body>
@@ -43,6 +71,12 @@
   <div id="score">Score: 0</div>
   <canvas id="game" width="500" height="500"></canvas>
   <button id="restart">Restart</button>
+  <div id="mobileControls" aria-label="Snake mobile controls">
+    <button id="up" aria-label="Move up">▲</button>
+    <button id="left" aria-label="Move left">◀</button>
+    <button id="down" aria-label="Move down">▼</button>
+    <button id="right" aria-label="Move right">▶</button>
+  </div>
   <div id="message"></div>
 
   <script>
@@ -160,6 +194,25 @@
       if (requested.x === -direction.x && requested.y === -direction.y) return;
       nextDirection = requested;
     });
+
+    function changeDirection(requested) {
+      if (gameOver) return;
+      if (requested.x === -direction.x && requested.y === -direction.y) return;
+      nextDirection = requested;
+    }
+
+    function bindMobileButton(id, requested) {
+      const button = document.getElementById(id);
+      button.addEventListener("pointerdown", event => {
+        event.preventDefault();
+        changeDirection(requested);
+      });
+    }
+
+    bindMobileButton("up", { x: 0, y: -1 });
+    bindMobileButton("down", { x: 0, y: 1 });
+    bindMobileButton("left", { x: -1, y: 0 });
+    bindMobileButton("right", { x: 1, y: 0 });
 
     restartButton.addEventListener("click", reset);
     reset();
