@@ -20,22 +20,49 @@
       padding: 20px;
     }
     h1 { margin: 0; }
-    #score { font-size: 18px; }
-    canvas {
+    #score { font-size: 20px; font-weight: 700; }
+    .game-wrap {
+      position: relative;
       width: min(90vw, 500px);
-      height: min(90vw, 500px);
+      aspect-ratio: 1;
+    }
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
       background: #0b1220;
       border: 3px solid white;
       image-rendering: pixelated;
     }
-    button {
-      padding: 10px 18px;
+    #gameOverOverlay {
+      position: absolute;
+      inset: 3px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 12px;
+      background: rgba(0, 0, 0, 0.72);
+      text-align: center;
+    }
+    #gameOverOverlay.show { display: flex; }
+    #gameOverOverlay h2 {
+      margin: 0;
+      font-size: clamp(30px, 8vw, 48px);
+    }
+    #finalScore {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 600;
+    }
+    #restart {
+      padding: 11px 22px;
       border: 0;
       border-radius: 8px;
       cursor: pointer;
-      font-size: 16px;
+      font-size: 17px;
+      font-weight: 700;
     }
-    #message { min-height: 20px; text-align: center; }
     #mobileControls {
       display: none;
       grid-template-columns: repeat(3, 58px);
@@ -48,6 +75,8 @@
       width: 58px;
       height: 58px;
       padding: 0;
+      border: 0;
+      border-radius: 8px;
       font-size: 24px;
       font-weight: bold;
       background: #374151;
@@ -61,7 +90,7 @@
     #right { grid-column: 3; grid-row: 2; }
     @media (max-width: 700px), (pointer: coarse) {
       #mobileControls { display: grid; }
-      canvas { width: min(90vw, 420px); height: min(90vw, 420px); }
+      .game-wrap { width: min(90vw, 420px); }
       button { -webkit-tap-highlight-color: transparent; }
     }
   </style>
@@ -69,21 +98,29 @@
 <body>
   <h1>Snake Game</h1>
   <div id="score">Score: 0</div>
-  <canvas id="game" width="500" height="500"></canvas>
-  <button id="restart">Restart</button>
+
+  <div class="game-wrap">
+    <canvas id="game" width="500" height="500"></canvas>
+    <div id="gameOverOverlay">
+      <h2>Game Over</h2>
+      <p id="finalScore">Score: 0</p>
+      <button id="restart">Restart</button>
+    </div>
+  </div>
+
   <div id="mobileControls" aria-label="Snake mobile controls">
     <button id="up" aria-label="Move up">▲</button>
     <button id="left" aria-label="Move left">◀</button>
     <button id="down" aria-label="Move down">▼</button>
     <button id="right" aria-label="Move right">▶</button>
   </div>
-  <div id="message"></div>
 
   <script>
     const canvas = document.getElementById("game");
     const ctx = canvas.getContext("2d");
     const scoreEl = document.getElementById("score");
-    const messageEl = document.getElementById("message");
+    const gameOverOverlay = document.getElementById("gameOverOverlay");
+    const finalScoreEl = document.getElementById("finalScore");
     const restartButton = document.getElementById("restart");
 
     const grid = 20;
@@ -100,9 +137,10 @@
       nextDirection = { x: 1, y: 0 };
       score = 0;
       gameOver = false;
-      messageEl.textContent = "";
-      food = createFood();
       scoreEl.textContent = "Score: 0";
+      finalScoreEl.textContent = "Score: 0";
+      gameOverOverlay.classList.remove("show");
+      food = createFood();
       clearInterval(timer);
       timer = setInterval(update, 110);
       draw();
@@ -153,7 +191,8 @@
     function endGame() {
       gameOver = true;
       clearInterval(timer);
-      messageEl.textContent = "Game Over! Press Restart to play again.";
+      finalScoreEl.textContent = "Score: " + score;
+      gameOverOverlay.classList.add("show");
       draw();
     }
 
@@ -172,23 +211,14 @@
 
     document.addEventListener("keydown", event => {
       const keys = {
-        ArrowUp: { x: 0, y: -1 },
-        w: { x: 0, y: -1 },
-        W: { x: 0, y: -1 },
-        ArrowDown: { x: 0, y: 1 },
-        s: { x: 0, y: 1 },
-        S: { x: 0, y: 1 },
-        ArrowLeft: { x: -1, y: 0 },
-        a: { x: -1, y: 0 },
-        A: { x: -1, y: 0 },
-        ArrowRight: { x: 1, y: 0 },
-        d: { x: 1, y: 0 },
-        D: { x: 1, y: 0 }
+        ArrowUp: { x: 0, y: -1 }, w: { x: 0, y: -1 }, W: { x: 0, y: -1 },
+        ArrowDown: { x: 0, y: 1 }, s: { x: 0, y: 1 }, S: { x: 0, y: 1 },
+        ArrowLeft: { x: -1, y: 0 }, a: { x: -1, y: 0 }, A: { x: -1, y: 0 },
+        ArrowRight: { x: 1, y: 0 }, d: { x: 1, y: 0 }, D: { x: 1, y: 0 }
       };
 
       const requested = keys[event.key];
-      if (!requested) return;
-
+      if (!requested || gameOver) return;
       event.preventDefault();
 
       if (requested.x === -direction.x && requested.y === -direction.y) return;
@@ -202,8 +232,7 @@
     }
 
     function bindMobileButton(id, requested) {
-      const button = document.getElementById(id);
-      button.addEventListener("pointerdown", event => {
+      document.getElementById(id).addEventListener("pointerdown", event => {
         event.preventDefault();
         changeDirection(requested);
       });
