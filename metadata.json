@@ -1,0 +1,8 @@
+{
+  "name": "AI Wars",
+  "description": "A collection of AI-themed games and applications featuring ChatGPT, Claude, Gemini, and DeepSeek.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
