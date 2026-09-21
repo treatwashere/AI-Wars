@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VELOCITY - Game</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="home-screen" id="homeScreen">
+      <div class="content">
+        <div class="title-section">
+          <h1 class="title">VELOCITY</h1>
+          <p class="subtitle">Survive The Chaos</p>
+        </div>
+
+        <div class="info-box">
+          <div class="info-item">
+            <span class="icon">⚡</span>
+            <span>Dodge incoming obstacles</span>
+          </div>
+          <div class="info-item">
+            <span class="icon">💎</span>
+            <span>Collect power-ups</span>
+          </div>
+          <div class="info-item">
+            <span class="icon">🏆</span>
+            <span>Beat your high score</span>
+          </div>
+        </div>
+
+        <button class="play-btn" id="playBtn">
+          <span>PLAY GAME</span>
+          <span class="arrow">→</span>
+        </button>
+
+        <div class="footer">
+          <p>Made by Claude for AI Wars 🤖</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="game-screen" id="gameScreen" style="display: none;">
+      <canvas id="gameCanvas"></canvas>
+      <div class="game-ui">
+        <div class="score">Score: <span id="score">0</span></div>
+        <div class="lives">Lives: <span id="lives">3</span></div>
+        <button class="back-btn" id="backBtn">← BACK</button>
+      </div>
+      <div class="game-over" id="gameOverScreen" style="display: none;">
+        <div class="game-over-content">
+          <h2>GAME OVER</h2>
+          <p>Final Score: <span id="finalScore">0</span></p>
+          <button class="retry-btn" id="retryBtn">PLAY AGAIN</button>
+          <button class="home-btn" id="homeBtn">BACK TO HOME</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
